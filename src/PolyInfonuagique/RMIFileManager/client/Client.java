@@ -42,7 +42,7 @@ public class Client {
 
         try {
             Registry registry = LocateRegistry.getRegistry(SERVER_ADDR);
-            server = (ServerInterface) registry.lookup("server");
+            server = (ServerInterface) registry.lookup("Server");
         } catch (RemoteException | NotBoundException e) {
             throw new ManageException("Echec de la connexion avec le serveur",e);
         }
