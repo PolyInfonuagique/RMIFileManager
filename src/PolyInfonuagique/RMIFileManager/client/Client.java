@@ -43,9 +43,7 @@ public class Client {
         try {
             Registry registry = LocateRegistry.getRegistry(SERVER_ADDR);
             server = (ServerInterface) registry.lookup("server");
-        } catch (RemoteException e) {
-            throw new ManageException("Echec de la connexion avec le serveur",e);
-        } catch (NotBoundException e) {
+        } catch (RemoteException | NotBoundException e) {
             throw new ManageException("Echec de la connexion avec le serveur",e);
         }
     }
@@ -54,6 +52,14 @@ public class Client {
         try {
             if("list".equals(command)){
                 return server.list();
+            }
+            else if("create".equals(command)){
+                if(param.isEmpty()){
+                    throw new ManageException("Erreur : create doit avoir un nom de fichier non vide");
+                }
+
+                server.create(param);
+                return param+" ajouté.";
             }
             else {
                 throw new ManageException("Erreur : commande inconnue");
