@@ -1,5 +1,8 @@
 package PolyInfonuagique.RMIFileManager.server;
 
-public class Server {
+import java.rmi.*;
+import java.rmi.server.*;
+
+public class Server extends UnicastRemoteObject implements ServerInterface {
 
 }
