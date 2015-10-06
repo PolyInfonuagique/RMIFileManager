@@ -1,5 +1,6 @@
 package PolyInfonuagique.RMIFileManager.shared;
 
+import java.io.File;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
@@ -7,7 +8,7 @@ public interface ServerInterface extends Remote {
     /**
      * Génération d'un ID unique pour le client
      */
-	void generateClientId() throws RemoteException;
+	int generateClientId() throws RemoteException;
 
     /**
      * Création d'un fichier vide sur le serveur.
@@ -35,7 +36,7 @@ public interface ServerInterface extends Remote {
      * Les fichiers locaux sont supprimés et remplacé par leur version distante
      * @throws RemoteException
      */
-	void syncLocalDir() throws RemoteException;
+	File[] syncLocalDir() throws RemoteException;
 
     /**
      * Obtention de la dernière version du fichier
