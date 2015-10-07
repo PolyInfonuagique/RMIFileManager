@@ -13,6 +13,8 @@ import PolyInfonuagique.RMIFileManager.shared.ServerInterface;
 public class Server implements ServerInterface {
 	
 	private Map<String, byte[]> files = new HashMap<String, byte[]> ();
+	private int lastClientId = 0;
+	private Map<String, Integer> lockTable = new HashMap<String, Integer>();
 
 	protected Server() throws RemoteException {
 		super();
@@ -39,7 +41,8 @@ public class Server implements ServerInterface {
 
 	@Override
 	public int generateClientId() throws RemoteException {
-		return 1;
+		lastClientId ++;
+		return lastClientId;
 	}
 
 	@Override
@@ -60,29 +63,40 @@ public class Server implements ServerInterface {
 	}
 
 	@Override
-	public void syncLocalDir() throws RemoteException {
-		// TODO Auto-generated method stub
-		
+	public Map<String, byte[]> syncLocalDir() throws RemoteException {
+		return files;
 	}
 
 	@Override
 	public byte[] get(String name, String checksum) throws RemoteException {
 		System.out.println("Get " + name + " (checksum = " + checksum + ")");
-		return null;
+		if(files.containsKey(name)){
+			return files.get(name);
+		}
+		else throw new RemoteException("Unknown file");
 	}
 
 	@Override
-	public byte[] lock(String nom, int clientid, String checksum)
-			throws RemoteException {
-		System.out.println("Lock "+ nom + " (checksum = " + checksum + ") by : "+clientid);
-		return null;
+	public byte[] lock(String nom, int clientid, String checksum) throws RemoteException {
+		if(!files.containsKey(nom)){
+			throw new RemoteException("Unknown file");
+		}
+		if(lockTable.containsKey(nom)){
+			throw new RemoteException("The file is alreadey lockes by " + lockTable.get(nom));
+		}
+		lockTable.put(nom, clientid);
+		return files.get(nom);
 	}
 
 	@Override
-	public void push(String nom, byte[] contenu, int clientid)
-			throws RemoteException {
-		System.out.println("Push "+ nom + " (size = " + contenu.length + ") by : "+clientid);
-		
+	public void push(String nom, byte[] contenu, int clientid) throws RemoteException {
+		if(!files.containsKey(nom)){
+			throw new RemoteException("Unknown file");
+		}
+		if(!(lockTable.containsKey(nom) && lockTable.get(nom).equals(clientid))){
+			throw new RemoteException("The file is not available");
+		}
+		files.put(nom,contenu);
 	}
 	
 }
