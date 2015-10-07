@@ -8,6 +8,7 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.util.Map;
 
 /**
  *
@@ -91,6 +92,10 @@ public class Client {
                 return param+" verrouillé";
             }
             else if("push".equals(command)){
+                if(param.isEmpty()){
+                    throw new ManageException("Erreur : push doit avoir un nom de fichier non vide");
+                }
+
                 File f = new File(param);
                 if(f.exists()){
                     try {
@@ -104,6 +109,15 @@ public class Client {
                 else{
                     throw new ManageException("Erreur fichier inconnue");
                 }
+            }
+            else if ("syncLocalDir".equals(command)) {
+                 Map<String, byte[]> files = server.syncLocalDir();
+                 files.forEach((fileName, data) -> {
+                     try {
+                         createOrUpdateFile(fileName, data);
+                     } catch (ManageException ignored) {}
+                 });
+                 return files.size() + " mise à jour";
             }
             else {
                 throw new ManageException("Erreur : commande inconnue");
