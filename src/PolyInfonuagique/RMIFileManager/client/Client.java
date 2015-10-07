@@ -102,7 +102,7 @@ public class Client {
                         server.push(f.getName(),Files.readAllBytes(f.toPath()),getClientId());
 
                     } catch (IOException e) {
-                        throw new ManageException("Erreur IO");
+                        throw new ManageException("Erreur IO",e);
                     }
                     return param+" a été envoyé au serveur";
                 }
@@ -133,8 +133,28 @@ public class Client {
      * @throws RemoteException
      */
     private int getClientId() throws RemoteException {
+        File clientIdFile = new File(".clientID");
+        if(!clientIdFile.exists()){
+            try {
+                clientIdFile.createNewFile();
+                FileOutputStream outputStream = new FileOutputStream(clientIdFile);
+
+                clientId = server.generateClientId();
+                outputStream.write(clientId);
+                outputStream.close();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
         if(clientId == null){
-            clientId = server.generateClientId();
+            try {
+                FileInputStream inputStream = new FileInputStream(clientIdFile);
+                clientId = inputStream.read();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         return clientId;
     }
