@@ -1,5 +1,8 @@
 package PolyInfonuagique.RMIFileManager.server;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 import java.rmi.*;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -8,6 +11,8 @@ import java.rmi.server.*;
 import PolyInfonuagique.RMIFileManager.shared.ServerInterface;
 
 public class Server implements ServerInterface {
+	
+	private Map<String, byte[]> files = new HashMap<String, byte[]> ();
 
 	protected Server() throws RemoteException {
 		super();
@@ -40,13 +45,18 @@ public class Server implements ServerInterface {
 	@Override
 	public void create(String nom) throws RemoteException {
 		System.out.println("Create "+ nom);
-		
+		files.put(nom, new byte[0]);
 	}
 
 	@Override
 	public String list() throws RemoteException {
+		StringBuffer buffer = new StringBuffer();
 		System.out.println("List");
-		return "toto";
+		Set<String> filenames = files.keySet();
+		for (String s : filenames) {
+			buffer.append("* " + s + "\n");
+		}
+		return buffer.toString() + "Total : " + files.size() ;
 	}
 
 	@Override
