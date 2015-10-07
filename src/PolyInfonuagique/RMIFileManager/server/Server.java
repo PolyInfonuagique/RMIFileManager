@@ -33,20 +33,19 @@ public class Server implements ServerInterface {
 	}
 
 	@Override
-	public void generateClientId() throws RemoteException {
-		// TODO Auto-generated method stub
-		
+	public int generateClientId() throws RemoteException {
+		return 1;
 	}
 
 	@Override
 	public void create(String nom) throws RemoteException {
-		// TODO Auto-generated method stub
+		System.out.println("Create "+ nom);
 		
 	}
 
 	@Override
 	public String list() throws RemoteException {
-		// TODO Auto-generated method stub
+		System.out.println("List");
 		return "toto";
 	}
 
@@ -58,21 +57,21 @@ public class Server implements ServerInterface {
 
 	@Override
 	public byte[] get(String name, String checksum) throws RemoteException {
-		// TODO Auto-generated method stub
+		System.out.println("Get " + name + " (checksum = " + checksum + ")");
 		return null;
 	}
 
 	@Override
 	public byte[] lock(String nom, int clientid, String checksum)
 			throws RemoteException {
-		// TODO Auto-generated method stub
+		System.out.println("Lock "+ nom + " (checksum = " + checksum + ") by : "+clientid);
 		return null;
 	}
 
 	@Override
 	public void push(String nom, byte[] contenu, int clientid)
 			throws RemoteException {
-		// TODO Auto-generated method stub
+		System.out.println("Push "+ nom + " (size = " + contenu.length + ") by : "+clientid);
 		
 	}
 	

@@ -9,6 +9,9 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
+/**
+ *
+ */
 public class Client {
 
     public static final String SERVER_ADDR = "127.0.0.1";
@@ -110,6 +113,11 @@ public class Client {
         }
     }
 
+    /**
+     * Get client id, ask server when if doesn't know current id.
+     * @return int id
+     * @throws RemoteException
+     */
     private int getClientId() throws RemoteException {
         if(clientId == null){
             clientId = server.generateClientId();
@@ -117,6 +125,11 @@ public class Client {
         return clientId;
     }
 
+    /**
+     * Get checksum MD5 for a file
+     * @param fileName file name
+     * @return checksum MD5 or -1 if file doesn't exist
+     */
     private String getChecksum(String fileName) {
         String checksum = "-1";
         File f = new File(fileName);
@@ -124,9 +137,17 @@ public class Client {
         if(f.exists()){
             checksum = MD5Checksum.checkSum(f.getPath());
         }
+
+        System.out.println("DEBUG: checksum = "+checksum);
         return checksum;
     }
 
+    /**
+     * Create or update local file with data
+     * @param fileName file name
+     * @param data array of bytes
+     * @throws ManageException when IO error
+     */
     private void createOrUpdateFile(String fileName, byte[] data) throws ManageException {
         File localFile = new File(fileName);
         if(data != null){

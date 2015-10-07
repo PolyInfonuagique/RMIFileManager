@@ -36,7 +36,7 @@ public interface ServerInterface extends Remote {
      * Les fichiers locaux sont supprimés et remplacé par leur version distante
      * @throws RemoteException
      */
-	File[] syncLocalDir() throws RemoteException;
+	void syncLocalDir() throws RemoteException;
 
     /**
      * Obtention de la dernière version du fichier
