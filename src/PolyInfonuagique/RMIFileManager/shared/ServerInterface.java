@@ -3,6 +3,7 @@ package PolyInfonuagique.RMIFileManager.shared;
 import java.io.File;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.Map;
 
 public interface ServerInterface extends Remote {
     /**
@@ -36,7 +37,7 @@ public interface ServerInterface extends Remote {
      * Les fichiers locaux sont supprimés et remplacé par leur version distante
      * @throws RemoteException
      */
-	void syncLocalDir() throws RemoteException;
+	Map<String, byte[]> syncLocalDir() throws RemoteException;
 
     /**
      * Obtention de la dernière version du fichier
