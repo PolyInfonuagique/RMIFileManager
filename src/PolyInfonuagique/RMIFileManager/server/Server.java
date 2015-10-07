@@ -53,11 +53,15 @@ public class Server implements ServerInterface {
 
 	@Override
 	public String list() throws RemoteException {
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 		System.out.println("List");
 		Set<String> filenames = files.keySet();
 		for (String s : filenames) {
-			buffer.append("* " + s + "\n");
+			buffer.append("* ").append(s);
+            if(lockTable.containsKey(s)){
+                buffer.append(" verrouillé par client ").append(lockTable.get(s));
+            }
+            buffer.append('\n');
 		}
 		return buffer.toString() + "Total : " + files.size() ;
 	}
