@@ -1,6 +1,10 @@
-package PolyInfonuagique.RMIFileManager.client;
+package PolyInfonuagique.RMIFileManager.shared;
 
-
+/**
+ * Custom exception
+ * Handle logical issue
+ * @author David Livet, Arnaud Baillym
+ */
 public class ManageException extends Exception {
     public ManageException(String message) {
         super(message);
